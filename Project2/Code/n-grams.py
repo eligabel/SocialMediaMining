@@ -31,4 +31,4 @@ df['4-grams'] = frGrams
 
 #Export
 print('exporting POS tagged file')
-df.to_csv('~/SocialMediaMining/Project2/Data/mergedAskRedGrams', index=False)
+df.to_csv('~/SocialMediaMining/Project2/Data/mergedMensRightsGrams.csv', index=False)
