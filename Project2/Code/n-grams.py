@@ -2,33 +2,54 @@ import nltk
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.util import ngrams
 import pandas as pd
 from pandas import Series,DataFrame
 import numpy as np
 import re
 import pandas as pd
 
-dataPath = '~/SocialMediaMining/Project2/Data/mergedMensRightsRed.csv'
+dataPath = '~/SocialMediaMining/Project2/Data/mergedAskRed.csv'
 df = pd.read_csv(dataPath, engine='python')
 
+words = df['comment_body']
 #unigrams
-words = df.comment_body
+listdf = words.tolist()
+
+wordlist = []
+
+for i in listdf:
+	unigram = nltk.word_tokenize(str(i))
+	wordlist.append(unigram)
 
 #bigrams
-bigrams = (pd.Series(nltk.ngrams(words, 3)).value_counts())
+bigramlist = []
+
+for i in wordlist:
+	bigram = list(ngrams(i, 2))
+	bigramlist.append(bigram)
 
 #trigrams
-trigrams = (pd.Series(nltk.ngrams(words, 3)).value_counts())
+trigramlist = []
+
+for i in wordlist:
+	trigram = list(ngrams(i, 3))
+	trigramlist.append(trigram)
 
 #4-grams
-frGrams = (pd.Series(nltk.ngrams(words, 4)).value_counts())
+frgramlist = []
+
+for i in wordlist:
+	frgram = list(ngrams(i, 4))
+	frgramlist.append(frgram)
 
 #new column in df
-df['unigrams'] = words
-df['bigrams'] = bigrams
-df['trigrams'] = trigrams
-df['4-grams'] = frGrams
+df['unigrams'] = wordlist
+df['bigrams'] = bigramlist
+df['trigrams'] = trigramlist
+df['4-grams'] = frgramlist
+
 
 #Export
-print('exporting POS tagged file')
-df.to_csv('~/SocialMediaMining/Project2/Data/mergedMensRightsGrams.csv', index=False)
+print('exporting ngram file')
+df.to_csv('~/SocialMediaMining/Project2/Data/mergedAskRedGrams.csv', index=False)
